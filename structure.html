@@ -81,26 +81,28 @@ button:active{opacity:0.85;transform:translateY(1px);}
     <label><input type="checkbox" name="s1" value="2">2：大半で支点が成立</label>
     <label><input type="checkbox" name="s1" value="3">3：荷物を持っても揺るがない</label>
   </div>
-  <div class="slider-block">
-    <div class="slider-label">② 胸郭（肋骨と肩甲帯の分離） <span id="s2v" class="score-value">0</span></div>
-    <input id="s2" type="range" min="0" max="3" value="0">
-    <div class="criteria">
-0：反りで誤魔化す  
-1：少しだけ分離  
-2：自然に分離  
-3：肋骨→肩甲帯の入れ替えが自在  
-    </div>
+  
+ <div class="criteria-box">
+  <div class="slider-label">
+    ② 胸郭（肋骨と肩甲帯の分離） <span id="s2v" class="score-value">0</span>
   </div>
-  <div class="slider-block">
-    <div class="slider-label">③ OHS（オーバーヘッドスクワット） <span id="s3v" class="score-value">0</span></div>
-    <input id="s3" type="range" min="0" max="3" value="0">
-    <div class="criteria">
-0：バーが前に倒れる  
-1：ギリ成立  
-2：耳ラインで安定  
-3：滑らか・左右差なし  
-    </div>
+  <label><input type="checkbox" name="s2" value="0">0：反りで誤魔化す</label>
+  <label><input type="checkbox" name="s2" value="1">1：少しだけ分離</label>
+  <label><input type="checkbox" name="s2" value="2">2：自然に分離</label>
+  <label><input type="checkbox" name="s2" value="3">3：肋骨→肩甲帯の入れ替えが自在</label>
+ </div>
+  
+
+<div class="criteria-box">
+  <div class="slider-label">
+    ③ OHS（オーバーヘッドスクワット） <span id="s3v" class="score-value">0</span>
   </div>
+  <label><input type="checkbox" name="s3" value="0">0：バーが前に倒れる</label>
+  <label><input type="checkbox" name="s3" value="1">1：ギリ成立</label>
+  <label><input type="checkbox" name="s3" value="2">2：耳ラインで安定</label>
+  <label><input type="checkbox" name="s3" value="3">3：滑らか・左右差なし</label>
+</div>
+
   <button onclick="saveScore()">今日の構造スコアを保存</button>
 </section>
 <section class="card">
@@ -134,9 +136,7 @@ button:active{opacity:0.85;transform:translateY(1px);}
   const s2v=document.getElementById("s2v");
   const s3v=document.getElementById("s3v");
 
-  document.getElementById("s2").oninput=function(){s2v.textContent=this.value;};
-  document.getElementById("s3").oninput=function(){s3v.textContent=this.value;};
-
+ 
   window.saveScore=function(){
     const now=new Date();
     const d=now.getFullYear()+"-"+("0"+(now.getMonth()+1)).slice(-2)+"-"+("0"+now.getDate()).slice(-2);
@@ -144,14 +144,15 @@ button:active{opacity:0.85;transform:translateY(1px);}
     const entry={
       date:d,
       s1:getMax("s1"),
-      s2:Number(document.getElementById("s2").value),
-      s3:Number(document.getElementById("s3").value)
+      s2:getMax("s2"),
+      s3:getMax("s3")
     };
 
     appData.checks.push(entry);
     localStorage.setItem(STORAGE_KEY,JSON.stringify(appData));
     render();
     alert("保存しました");
+    clearChecks();
   };
 
   function render(){
@@ -187,11 +188,23 @@ function getMax(name){
   return max;
 }
 
-document.querySelectorAll("input[type=checkbox]").forEach(b=>{
+document.querySelectorAll('input[type="checkbox"]').forEach(b=>{
   b.addEventListener("change",()=>{
-    document.getElementById("s1v").textContent=getMax("s1");
+    document.getElementById("s1v").textContent = getMax("s1");
+    document.getElementById("s2v").textContent = getMax("s2");
+    document.getElementById("s3v").textContent = getMax("s3");
   });
 });
+  function clearChecks(){
+  document.querySelectorAll('input[type="checkbox"]').forEach(b=>{
+    b.checked = false;
+  });
+
+  // 表示を 0 に戻す
+  document.getElementById("s1v").textContent = 0;
+  document.getElementById("s2v").textContent = 0;
+  document.getElementById("s3v").textContent = 0;
+}
 </script>
 </body>
 </html>
