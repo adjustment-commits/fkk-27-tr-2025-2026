@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>FKK27｜トレーニングメニュー｜by adjustment-field</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+  <meta name="theme-color" content="#00b386">
+  <link rel="manifest" href="manifest.json">
+  <script>
+  if("serviceWorker" in navigator){
+    window.addEventListener("load",()=>{
+      navigator.serviceWorker.register("service-worker.js");
+    });
+  }
+  </script>
+  <style>
+    :root{
+      --bg:#f8faf9;
+      --card:#ffffff;
+      --accent:#007b9e;
+      --accent-soft:#d6ecf5;
+      --text:#1a1a1a;
+      --muted:#666;
+      --line:rgba(0,0,0,0.08);
+      --ok:#0a8f5a;
+      --warn:#c47f00;
+      --danger:#e45757;
+      font-family:"Noto Sans JP",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    }
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.7;
+      -webkit-text-size-adjust:100%;
+    }
+    header{
+      padding:20px 16px 8px;
+      text-align:center;
+    }
+    header h1{
+      margin:0 0 6px;
+      font-size:1.2rem;
+      font-weight:600;
+    }
+    header p{
+      margin:0;
+      font-size:0.8rem;
+      color:var(--muted);
+    }
+    main{
+      max-width:780px;
+      margin:0 auto 32px;
+      padding:0 12px 24px;
+    }
+    .card{
+      background:var(--card);
+      border-radius:12px;
+      padding:16px 16px 20px;
+      box-shadow:0 2px 4px rgba(0,0,0,0.04);
+      border:1px solid var(--line);
+      margin-bottom:16px;
+    }
+    .card h2{
+      margin:0 0 8px;
+      font-size:1rem;
+      font-weight:600;
+    }
+    .lead{
+      font-size:0.8rem;
+      color:var(--muted);
+      margin:0 0 10px;
+    }
+    .section-label{
+      font-size:0.78rem;
+      font-weight:600;
+      color:var(--muted);
+      margin:4px 0 8px;
+      padding-left:4px;
+      border-left:3px solid var(--accent-soft);
+    }
+    .ex-card{
+      margin-bottom:16px;
+      padding-bottom:12px;
+      border-bottom:1px dashed var(--line);
+    }
+    .ex-card:last-of-type{
+      border-bottom:none;
+      padding-bottom:0;
+      margin-bottom:0;
+    }
+    .ex-title{
+      font-size:0.95rem;
+      font-weight:600;
+      margin:0 0 4px;
+    }
+    .ex-purpose{
+      font-size:0.75rem;
+      color:var(--muted);
+      margin:0 0 4px;
+    }
+    .ex-intensity{
+      font-size:0.75rem;
+      margin:0 0 4px;
+    }
+    .ex-desc{
+      font-size:0.75rem;
+      color:var(--muted);
+      margin:0 0 6px;
+    }
+    .ex-img{
+      width:100%;
+      max-width:360px;
+      height:auto;
+      border-radius:8px;
+      border:1px solid var(--line);
+      background:#ffffff;
+      display:block;
+    }
+    .btn-row{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      margin-top:8px;
+    }
+    button{
+      border-radius:999px;
+      border:none;
+      padding:12px 16px;
+      font-size:0.95rem;
+      font-weight:600;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:6px;
+      white-space:nowrap;
+    }
+    .btn-primary{
+      background:var(--accent);
+      color:#ffffff;
+    }
+    .btn-secondary{
+      background:#ddd;
+      color:#333;
+    }
+    button:active{
+      opacity:0.85;
+      transform:translateY(1px);
+    }
+    .stat-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:baseline;
+      gap:8px;
+      margin-top:4px;
+    }
+    .stat-label{
+      font-size:0.8rem;
+      color:var(--muted);
+    }
+    .stat-value{
+      font-size:1.3rem;
+      font-weight:700;
+    }
+    .stat-value.ok{color:var(--ok);}
+    .stat-value.warn{color:var(--warn);}
+    .stat-value.bad{color:var(--danger);}
+    .stat-detail{
+      font-size:0.75rem;
+      color:var(--muted);
+      margin-top:6px;
+    }
+    .days-list{
+      list-style:none;
+      padding:0;
+      margin:6px 0 0;
+      font-size:0.75rem;
+      color:var(--muted);
+      max-height:120px;
+      overflow-y:auto;
+    }
+    .days-list li{
+      padding:2px 0;
+      border-bottom:1px dashed var(--line);
+    }
+    .days-list li:last-child{
+      border-bottom:none;
+    }
+    footer{
+      text-align:center;
+      font-size:0.68rem;
+      color:var(--muted);
+      padding:4px 0 14px;
+    }
+    @media (min-width:720px){
+      header h1{font-size:1.3rem;}
+    }
+  </style>
+</head>
+<body>
+<header>
+  <h1>FKK27｜トレーニングメニュー</h1>
+  <p>捕手×中軸のための「構造6種目＋ベースウエイト3種目」を月10回まわすための画面。</p>
+</header>
+<main>
+  <section class="card">
+    <h2>今日のメニュー（構造6＋ウエイト3）</h2>
+    <p class="lead">
+      0）構造評価で状態を確認した上で、このメニューを「同じ内容で」積み上げていきます。<br>
+      1ヶ月で10回回せれば、その月は構造づくりの量として100％達成とみなします。
+    </p>
+<p class="section-label">構造ドリル（EX1〜EX6）</p>
+
+<!-- EX1 -->
+<div class="ex-card">
+  <div class="ex-title">① 捕手型トライポッド（Dynamic Tripod Squat）</div>
+  <div class="ex-purpose">目的：横アーチを支点に、しゃがみ〜立ち上がりの「迎撃→逃がし」を身につける。</div>
+  <div class="ex-intensity">強度：ウォーターバッグ／MB抱え 8〜10回 × 1〜2セット（両足）</div>
+  <div class="ex-desc">
+    ステップ台に両足で立ち、踵をわずかにはみ出してセット。横アーチを支点にしゃがみ、足趾側に寄りすぎれば前に、踵側に寄りすぎれば後ろに倒れるギリギリをコントロールしながら、上下動を安定させる。
+  </div>
+  <img src="assets/ex01.png" class="ex-img" alt="ステップ台に両足を乗せ、踵をはみ出してしゃがみと立ち上がりを行う捕手型トライポッドドリル">
+</div>
+
+<!-- EX2 -->
+<div class="ex-card">
+  <div class="ex-title">② 胸郭×肩甲帯バンドローテ（Rib–Scap Switch）</div>
+  <div class="ex-purpose">目的：胸郭（肋骨）と肩甲帯の「分離」と「入れ替わり」を作り、投打の遅れと走りを整える。</div>
+  <div class="ex-intensity">強度：ライト〜ミディアムバンド 6〜8回 × 1〜2セット／左右</div>
+  <div class="ex-desc">
+    バンドを胸郭の回旋方向と逆側から張り、胸郭だけを回して一瞬止める。肩甲帯はバンドのテンションを感じながら“取り残す”か、“後から追いかけて入れ替わる”感覚をつくる。腕ではなく肋骨の回旋を主役にする。
+  </div>
+  <img src="assets/ex02.png" class="ex-img" alt="バンドのテンションに対して胸郭と肩甲帯を分離して回旋するドリル">
+</div>
+
+<!-- EX3 -->
+<div class="ex-card">
+  <div class="ex-title">③ 肩甲帯取り残しドリル（Lost Scap Pattern）</div>
+  <div class="ex-purpose">目的：胸郭だけが先に動き、肩甲帯が“置いていかれる”タイムラグを体で覚える。</div>
+  <div class="ex-intensity">強度：自重〜軽プレート（2.5〜5kg） 6〜8回 × 1セット／左右</div>
+  <div class="ex-desc">
+    ヒンジ姿勢またはスプリット立位で、胸郭だけをわずかに回旋させる。肩甲帯はその場に残るイメージで固定し、戻すときは「胸郭が先・肩甲帯が後」の順で戻す。壁は使わず、内部の分離感だけで成立させる。
+  </div>
+  <img src="assets/ex03.png" class="ex-img" alt="胸郭だけ回旋させ肩甲帯を取り残す分離ドリル">
+</div>
+
+<!-- EX4 -->
+<div class="ex-card">
+  <div class="ex-title">④ 反応ステップ（Drop Heel React Step）</div>
+  <div class="ex-purpose">目的：踵の落下反動を使って、一歩目の引き上げと片脚支持の反応を磨く。</div>
+  <div class="ex-intensity">強度：左右 各4〜6回 × 1〜2セット（質優先）</div>
+  <div class="ex-desc">
+    ステップ台に片足を乗せ、踵をはみ出してセット。踵を“落とす”反動で素早く足を引き上げ、そのままステップ台上で片脚立ちになる。横アーチを支点に、落下→引き上げ→片脚支持までを一連の流れで行う。
+  </div>
+  <img src="assets/ex04.png" class="ex-img" alt="ステップ台で踵を落としてから片脚立ちへ移行する反応ステップドリル">
+</div>
+
+<!-- EX5 -->
+<div class="ex-card">
+  <div class="ex-title">⑤ HEXバー RDL（Tripod Hinge Control）</div>
+  <div class="ex-purpose">目的：足底トライポッドを保ったまま、骨盤ヒンジと胸郭ポジションをコントロールする。</div>
+  <div class="ex-intensity">強度：60〜75％1RM 5〜6回 × 3セット（RPE6〜7）</div>
+  <div class="ex-desc">
+    足底の横アーチが潰れない範囲でヒンジ。腰を反りすぎず、胸郭をやや前後に“遊ばせる”余白を残す。捕手の構え〜切り返しに必要な、骨盤と胸郭の中間ポジションを作るイメージで行う。
+  </div>
+  <img src="assets/ex05.png" class="ex-img" alt="HEXバーを使ったルーマニアンデッドリフトで骨盤と胸郭をコントロールする様子">
+</div>
+
+<!-- EX6 -->
+<div class="ex-card">
+  <div class="ex-title">⑥ ランドマインプレス（Rib–Scap Switch Drive）</div>
+  <div class="ex-purpose">目的：胸郭でためて、肩甲帯の入れ替えで加速する投打の“核心パターン”を作る。</div>
+  <div class="ex-intensity">強度：軽〜中負荷 5〜6回 × 2〜3セット／左右</div>
+  <div class="ex-desc">
+    スプリット立位でランドマインを保持。後脚側の胸郭をわずかに開き、先に胸郭で動き出す。肩甲帯は遅れて走り、プレスの終盤で「胸郭と肩甲帯が入れ替わる」感覚をつくる。腕で押さず、構造で押し出す。
+  </div>
+  <img src="assets/ex06.png" class="ex-img" alt="ランドマインプレスで胸郭と肩甲帯の入れ替えを利用して加速するドリル">
+</div>
+
+<p class="section-label" style="margin-top:16px;">ベースウエイト（SQ／BP／Row）</p>
+
+<!-- SQ -->
+<div class="ex-card">
+  <div class="ex-title">⑦ バックスクワット（Base SQ）</div>
+  <div class="ex-purpose">目的：捕手姿勢で使う“中間位”を保ったまま、全身出力の土台をつくる。</div>
+  <div class="ex-intensity">強度：RPE5〜6 3〜5回 × 2〜3セット</div>
+  <div class="ex-desc">
+    深さよりも、足底と胸郭・骨盤のポジションを優先。EX1で作った上下動の感覚をそのままバーベルに載せていくイメージで行う。
+  </div>
+  <img src="assets/ex07.png" class="ex-img" alt="バックスクワットで中間位を保ちながら出力を高める様子">
+</div>
+
+<!-- BP -->
+<div class="ex-card">
+  <div class="ex-title">⑧ ベンチプレス（Scap Support Bench）</div>
+  <div class="ex-purpose">目的：肩甲帯の“受け皿”を作りつつ、胸郭の微小な動きを許したまま押す。</div>
+  <div class="ex-intensity">強度：RPE6前後 4〜6回 × 2〜3セット</div>
+  <div class="ex-desc">
+    ブリッジは最小限。肩甲帯でしっかり支えながら、胸郭がわずかに上下できる余白を残して押す。EX2・EX6とつながる「押しの基礎」。
+  </div>
+  <img src="assets/ex08.png" class="ex-img" alt="ベンチプレスで肩甲帯の受け皿を作って押す様子">
+</div>
+
+<!-- Row -->
+<div class="ex-card">
+  <div class="ex-title">⑨ ワンハンドロウ（Rib Slide Row）</div>
+  <div class="ex-purpose">目的：胸郭スライドを主役にした“引き”で、肩甲帯の引き側の整理を行う。</div>
+  <div class="ex-intensity">強度：左右 各6〜8回 × 2セット</div>
+  <div class="ex-desc">
+    腰の回旋ではなく、胸郭のスライドで引き動作をスタートさせる。肩甲帯を固めすぎず、EX3の「取り残し感」と両立させながら行う。
+  </div>
+  <img src="assets/ex09.png" class="ex-img" alt="ワンハンドロウで胸郭スライドを主役にした引きを行う様子">
+</div>  </section>
+  <section class="card">
+    <h2>今日の実施を記録</h2>
+    <p class="lead">
+      このボタンは index.html の「今月の達成率」と同じロジックでカウントされます。<br>
+      1日1回、「今日のメニューセットをやり切ったら」押してください。
+    </p>
+<div class="btn-row">
+  <button class="btn-primary" type="button" onclick="handleMenuDone()">今日のメニュー実施を記録</button>
+  <button class="btn-secondary" type="button" onclick="goHome()">ホーム（TOP）へ戻る</button>
+  <button class="btn-secondary" type="button" onclick="goStructure()">0）構造評価画面へ戻る</button>
+</div>  </section>
+  <section class="card">
+    <h2>今月の達成状況</h2>
+<div class="stat-row">
+  <div class="stat-label" id="monthLabel">今月の達成率</div>
+  <div id="monthPercent" class="stat-value bad">0%</div>
+</div>
+
+<p id="monthDetail" class="stat-detail">今月はまだメニュー実施が記録されていません。</p>
+
+<p class="stat-label" style="margin-top:10px;">今月の実施日</p>
+<ul id="menuDaysList" class="days-list">
+  <li>まだ記録されていません。</li>
+</ul>  </section>
+</main>
+<footer>
+  FKK27 捕手のための構造評価＆メニュー管理アプリ（menu.html）
+</footer>
+<script>
+(function(){
+  const STORAGE_KEY = "fkk27_structural_and_menu_v1";
+
+  const monthLabel = document.getElementById("monthLabel");
+  const monthPercent = document.getElementById("monthPercent");
+  const monthDetail = document.getElementById("monthDetail");
+  const menuDaysList = document.getElementById("menuDaysList");
+
+  function loadData(){
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw){ return { checks:[], menuLogs:[] }; }
+      const parsed = JSON.parse(raw);
+      if(Array.isArray(parsed)){ return { checks:parsed, menuLogs:[] }; }
+      return {
+        checks: Array.isArray(parsed.checks)?parsed.checks:[],
+        menuLogs: Array.isArray(parsed.menuLogs)?parsed.menuLogs:[]
+      };
+    }catch(e){
+      return { checks:[], menuLogs:[] };
+    }
+  }
+
+  let appData = loadData();
+
+  function formatYMD(d){
+    const y=d.getFullYear();
+    const m=("0"+(d.getMonth()+1)).slice(-2);
+    const day=("0"+d.getDate()).slice(-2);
+    return y+"-"+m+"-"+day;
+  }
+
+  function updateMonthlyStats(){
+    const now = new Date();
+    const ym = now.getFullYear()+"-"+("0"+(now.getMonth()+1)).slice(-2);
+
+    const logs = appData.menuLogs || [];
+    const days = logs.filter(d => typeof d==="string" && d.startsWith(ym));
+
+    const count = days.length;
+    const raw = (count/10)*100;
+    const percent = raw>=100 ? 100 : Math.round(raw);
+
+    monthLabel.textContent = ym+" の達成率";
+    monthPercent.textContent = percent+"%";
+    monthPercent.classList.remove("ok","warn","bad");
+    if(percent>=100){
+      monthPercent.classList.add("ok");
+    }else if(percent>=50){
+      monthPercent.classList.add("warn");
+    }else{
+      monthPercent.classList.add("bad");
+    }
+
+    if(count===0){
+      monthDetail.textContent = "今月はまだメニュー実施が記録されていません。";
+    }else if(percent>=100){
+      monthDetail.textContent = "今月は "+count+" 回。目標の10回をクリアしています。";
+    }else if(percent>=80){
+      monthDetail.textContent = "今月は "+count+" 回。かなり良いペースです。";
+    }else{
+      monthDetail.textContent = "今月は "+count+" 回。積み重ねていきましょう。";
+    }
+
+    renderDays(days);
+  }
+
+  function renderDays(days){
+    menuDaysList.innerHTML = "";
+    if(days.length===0){
+      const li=document.createElement("li");
+      li.textContent="まだ記録されていません。";
+      menuDaysList.appendChild(li);
+      return;
+    }
+    days.slice().sort().forEach(d=>{
+      const li=document.createElement("li");
+      li.textContent=d+"：メニュー実施";
+      menuDaysList.appendChild(li);
+    });
+  }
+
+  window.handleMenuDone = function(){
+    const today = formatYMD(new Date());
+    if(!Array.isArray(appData.menuLogs)){ appData.menuLogs=[]; }
+
+    const idx = appData.menuLogs.indexOf(today);
+    if(idx===-1){
+      appData.menuLogs.push(today);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
+      updateMonthlyStats();
+      alert("今日のメニュー実施を記録しました。");
+    }else{
+      if(confirm("すでに本日の実施が記録されています。取り消しますか？")){
+        appData.menuLogs.splice(idx,1);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
+        updateMonthlyStats();
+      }
+    }
+  };
+
+  window.goHome = function(){
+    window.location.href = "index.html";
+  };
+
+  window.goStructure = function(){
+    window.location.href = "structure.html";
+  };
+
+  updateMonthlyStats();
+})();
+</script>
+</body>
+</html>
