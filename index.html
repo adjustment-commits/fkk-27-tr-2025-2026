@@ -1,9 +1,8 @@
 <!DOCTYPE html>
-
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>構造チェック｜捕手フィジカル評価</title>
+  <title>FKK27｜構造評価｜by adjustment-field</title>
   <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
   <meta name="theme-color" content="#f8faf9">
   <style>
@@ -292,8 +291,8 @@
 </head>
 <body>
   <header>
-    <h1>構造チェック｜捕手フィジカル自己評価</h1>
-    <p>0）足底・胸郭・OHSの3項目だけを点数化して、構造の達成率を管理するツール。</p>
+    <h1>FKK27｜構造評価｜by adjustment-field</h1>
+    <p>捕手×中軸のための「構造チェック0）」と、月10回メニュー実施の達成率を管理するスマホ用WEBアプリ。</p>
   </header>
 
   <main>
@@ -306,14 +305,15 @@
         </div>
       </div>
       <div class="summary-top" style="margin-top:2px;">
-        <span class="summary-label" style="font-size:0.8rem;color:var(--muted);">達成率</span>
+        <span style="font-size:0.8rem;color:var(--muted);">構造達成率</span>
         <span id="scorePercent" class="score-percent low">0 %</span>
       </div>
       <p class="summary-note" id="scoreComment">
         スライダーを動かして、3項目（足底・胸郭・オーバーヘッドスクワット）を自己評価してください。
       </p>
     </section>
-<div class="layout">
+
+  <div class="layout">
   <section>
     <div class="section">
       <h3>0）3つの構造チェック</h3>
@@ -364,7 +364,7 @@
         <div class="item-tag">全身統合</div>
       </div>
       <p class="item-desc">
-        頭上で棒（または腕）を保持したままスクワット。腰椎の反り上げ、バーが前に倒れる、膝が内側に入る、足裏がつぶれる、などの代償がどれくらい少ないかを評価。
+        頭上で棒（または腕）を保持したままスクワット。腰椎の反り上げ、バーが前に倒れる、膝が内側に入る、足裏がつぶれるなどの代償がどれくらい少ないかを評価。
       </p>
       <div class="slider-row">
         <input id="scoreOHS" type="range" min="0" max="10" step="1">
@@ -389,7 +389,10 @@
 
       <div class="btn-row">
         <button id="btnSave" class="btn-primary" type="button">
-          <span>今日の評価を保存</span>
+          <span>構造スコアを保存</span>
+        </button>
+        <button id="btnMenuDone" class="btn-primary" type="button" style="background:#0a8f5a;">
+          <span>今日のメニュー実施を記録</span>
         </button>
         <button id="btnClearForm" class="btn-ghost" type="button">
           <span>入力だけリセット</span>
@@ -401,7 +404,7 @@
   <aside>
     <section class="card history-card">
       <div class="history-header">
-        <h3>履歴（構造スコアの推移）</h3>
+        <h3>構造スコアの履歴</h3>
         <button id="btnClearHistory" class="btn-ghost" type="button" style="padding:4px 10px;font-size:0.7rem;">
           履歴を全削除
         </button>
@@ -415,20 +418,38 @@
     </section>
 
     <section class="card">
-      <h3 style="font-size:0.9rem;margin:0 0 4px;">達成率の目安</h3>
-      <p class="small-label" style="margin:0 0 4px;">30点満点のうち、どのゾーンにいるかで1日の攻め方を決める目安。</p>
+      <h3 style="font-size:0.9rem;margin:0 0 4px;">メニュー達成率（暦月）</h3>
+      <p class="small-label" style="margin:0 0 4px;">
+        1ヶ月につき、同じメニューを10回実施できれば達成率100％。それ以上は「やり切った状態」として扱います。
+      </p>
+
+      <div class="summary-top" style="margin-top:4px;">
+        <span style="font-size:0.8rem;color:var(--muted);" id="monthLabel">今月の達成率</span>
+        <span id="monthPercent" class="score-percent low">0 %</span>
+      </div>
+      <p class="summary-note" id="monthDetail">
+        今月はまだメニュー実施が記録されていません。
+      </p>
+
+      <p class="small-label" style="margin-top:6px;">達成率の目安</p>
       <ul style="margin:0;padding-left:1.1em;font-size:0.75rem;color:var(--muted);">
-        <li>26〜30点（達成率 87〜100％）：構造◎／ウエイトも動作も攻めてOK。</li>
-        <li>21〜25点（達成率 70〜83％）：構造○／基本メニュー＋様子を見ながら。</li>
-        <li>16〜20点（達成率 53〜66％）：構造△／修正系・モビリティ優先。</li>
-        <li>15点以下：構造×／高強度は避けてリセットデーにする。</li>
+        <li>100％（10回以上）：構造づくりは今月やり切り。翌月は質を高める月に。</li>
+        <li>80〜99％（8〜9回）：ほぼ理想。あと1〜2回をどこでねじ込むか相談。</li>
+        <li>50〜79％（5〜7回）：悪くないが、構造の定着には少し物足りないゾーン。</li>
+        <li>〜49％（0〜4回）：今月はまず「メニューに触れる回数」を優先する月。</li>
+      </ul>
+
+      <div class="small-label" style="margin-top:6px;">今月の実施日</div>
+      <ul id="menuDaysList" class="history-list" style="max-height:140px;">
+        <li class="history-item no-data">まだ記録されていません。</li>
       </ul>
     </section>
   </aside>
-</div>  </main>
-  
+</div>
+</main>
+
   <footer>
-    捕手 × 中軸のための「構造評価0）」に特化した簡易WEBアプリ。ローカル端末内（ブラウザ）にのみ記録を保存します。
+    FKK27 捕手のための構造評価アプリ。ブラウザのローカル保存のみを使用し、個人端末内で完結します。
   </footer>
 
   <script>
@@ -451,30 +472,47 @@
       const noteFree = document.getElementById("noteFree");
 
       const btnSave = document.getElementById("btnSave");
+      const btnMenuDone = document.getElementById("btnMenuDone");
       const btnClearForm = document.getElementById("btnClearForm");
       const btnClearHistory = document.getElementById("btnClearHistory");
+
       const historyList = document.getElementById("historyList");
+      const monthLabel = document.getElementById("monthLabel");
+      const monthPercent = document.getElementById("monthPercent");
+      const monthDetail = document.getElementById("monthDetail");
+      const menuDaysList = document.getElementById("menuDaysList");
 
-      const STORAGE_KEY = "catcher_structural_eval_v1";
+      const STORAGE_KEY = "fkk27_structural_and_menu_v1";
 
-      function loadHistory(){
+      let appData = loadData();
+
+      function loadData(){
         try{
           const raw = localStorage.getItem(STORAGE_KEY);
-          if(!raw){ return []; }
-          const arr = JSON.parse(raw);
-          if(!Array.isArray(arr)){ return []; }
-          return arr;
+          if(!raw){
+            return { checks: [], menuLogs: [] };
+          }
+          const parsed = JSON.parse(raw);
+          // 旧バージョン（配列のみ）からの移行も許容
+          if(Array.isArray(parsed)){
+            return { checks: parsed, menuLogs: [] };
+          }
+          const data = {
+            checks: Array.isArray(parsed.checks) ? parsed.checks : [],
+            menuLogs: Array.isArray(parsed.menuLogs) ? parsed.menuLogs : []
+          };
+          return data;
         }catch(e){
-          console.error("loadHistory error", e);
-          return [];
+          console.error("loadData error", e);
+          return { checks: [], menuLogs: [] };
         }
       }
 
-      function saveHistory(list){
+      function saveData(){
         try{
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
         }catch(e){
-          console.error("saveHistory error", e);
+          console.error("saveData error", e);
         }
       }
 
@@ -492,7 +530,7 @@
         scorePercent.classList.remove("ok","mid","low");
         if(percent >= 87){
           scorePercent.classList.add("ok");
-          scoreComment.textContent = "構造コンディションは「◎」。ウエイトも動作もその日のテーマに沿って攻めてOK。";
+          scoreComment.textContent = "構造コンディションは「◎」。ウエイトも動作も、その日のテーマに沿って攻めてOK。";
         }else if(percent >= 70){
           scorePercent.classList.add("mid");
           scoreComment.textContent = "構造コンディションは「○」。基本メニューをこなしつつ、気になる部位の修正を少し多めに。";
@@ -505,7 +543,7 @@
         }
       }
 
-      function formatDate(d){
+      function formatDateTime(d){
         const y = d.getFullYear();
         const m = ("0"+(d.getMonth()+1)).slice(-2);
         const day = ("0"+d.getDate()).slice(-2);
@@ -514,8 +552,15 @@
         return y + "-" + m + "-" + day + " " + h + ":" + min;
       }
 
+      function formatYMD(d){
+        const y = d.getFullYear();
+        const m = ("0"+(d.getMonth()+1)).slice(-2);
+        const day = ("0"+d.getDate()).slice(-2);
+        return y + "-" + m + "-" + day;
+      }
+
       function renderHistory(){
-        const list = loadHistory();
+        const list = appData.checks || [];
         historyList.innerHTML = "";
         if(!list.length){
           const li = document.createElement("li");
@@ -539,7 +584,9 @@
 
           const s = document.createElement("span");
           s.className = "history-score";
-          s.textContent = (item.total||0) + " / 30点 (" + (item.percent||0) + "%)";
+          const total = item.total || 0;
+          const percent = item.percent || 0;
+          s.textContent = total + " / 30点 (" + percent + "%)";
           top.appendChild(s);
 
           li.appendChild(top);
@@ -552,9 +599,10 @@
             { key:"thorax", label:"胸郭"},
             { key:"ohs", label:"OHS"}
           ];
+          const scores = item.scores || {};
           parts.forEach(p=>{
-            const val = (item.scores && typeof item.scores[p.key]==="number") ? item.scores[p.key] : null;
-            if(val===null) return;
+            const val = typeof scores[p.key]==="number" ? scores[p.key] : null;
+            if(val===null){ return; }
             const span = document.createElement("span");
             span.className = "history-tag";
             span.textContent = p.label + ":" + val;
@@ -593,7 +641,7 @@
 
         const now = new Date();
         const entry = {
-          date: formatDate(now),
+          date: formatDateTime(now),
           total: total,
           percent: percent,
           scores: {
@@ -610,19 +658,131 @@
           note: noteFree.value.trim()
         };
 
-        const list = loadHistory();
-        list.push(entry);
-        saveHistory(list);
+        if(!Array.isArray(appData.checks)){
+          appData.checks = [];
+        }
+        appData.checks.push(entry);
+        saveData();
         renderHistory();
-        scoreComment.textContent = "今日の構造スコアを保存しました。履歴リストから、過去との違いを確認できます。";
+        scoreComment.textContent = "今日の構造スコアを保存しました。履歴から過去との違いを確認できます。";
       }
 
       function handleClearHistory(){
-        if(!confirm("保存されている全ての履歴を削除しますか？この操作は元に戻せません。")){
+        if(!confirm("保存されている全ての構造スコア履歴を削除しますか？この操作は元に戻せません。")){
           return;
         }
-        saveHistory([]);
+        appData.checks = [];
+        saveData();
         renderHistory();
+      }
+
+      function handleMenuDone(){
+        const today = formatYMD(new Date());
+        if(!Array.isArray(appData.menuLogs)){
+          appData.menuLogs = [];
+        }
+        const idx = appData.menuLogs.indexOf(today);
+        if(idx === -1){
+          appData.menuLogs.push(today);
+          saveData();
+          updateMonthlyStats();
+          monthDetail.textContent = "今日のメニュー実施を記録しました。今月は " + appData.menuLogs.length + " 回目です。";
+        }else{
+          if(confirm("すでに「本日のメニュー実施」が記録されています。今日の記録を取り消しますか？")){
+            appData.menuLogs.splice(idx,1);
+            saveData();
+            updateMonthlyStats();
+            monthDetail.textContent = "今日のメニュー実施の記録を取り消しました。";
+          }
+        }
+        renderMenuDays();
+      }
+
+      function updateMonthlyStats(){
+        const now = new Date();
+        const y = now.getFullYear();
+        const m = now.getMonth() + 1;
+        const ymStr = y + "-" + ("0"+m).slice(-2);
+
+        const logs = Array.isArray(appData.menuLogs) ? appData.menuLogs : [];
+        let countThisMonth = 0;
+        const daysThisMonth = [];
+
+        logs.forEach(dStr=>{
+          if(typeof dStr !== "string"){ return; }
+          if(dStr.slice(0,7) === ymStr){
+            countThisMonth++;
+            daysThisMonth.push(dStr);
+          }
+        });
+
+        const rawPercent = (countThisMonth/10)*100;
+        const percent = rawPercent >= 100 ? 100 : Math.round(rawPercent);
+
+        monthLabel.textContent = ymStr + " の達成率";
+        monthPercent.textContent = percent + " %";
+        monthPercent.classList.remove("ok","mid","low");
+
+        if(percent >= 100){
+          monthPercent.classList.add("ok");
+          monthDetail.textContent = "今月は目標の10回をクリア（" + countThisMonth + "回）。構造づくりの量は十分です。質の調整に集中できます。";
+        }else if(percent >= 80){
+          monthPercent.classList.add("ok");
+          monthDetail.textContent = "今月は " + countThisMonth + " / 10回。かなり良いペースです。あと少しで100％達成。";
+        }else if(percent >= 50){
+          monthPercent.classList.add("mid");
+          monthDetail.textContent = "今月は " + countThisMonth + " / 10回。悪くないですが、構造定着にはもう数回積み重ねたいゾーンです。";
+        }else if(countThisMonth > 0){
+          monthPercent.classList.add("low");
+          monthDetail.textContent = "今月は " + countThisMonth + " / 10回。まずはメニューに触れる回数を増やすことを優先しましょう。";
+        }else{
+          monthPercent.classList.add("low");
+          monthDetail.textContent = "今月はまだメニュー実施が記録されていません。まずは1回目をクリアするところから。";
+        }
+
+        renderMenuDays(daysThisMonth);
+      }
+
+      function renderMenuDays(optionalDays){
+        const now = new Date();
+        const y = now.getFullYear();
+        const m = now.getMonth() + 1;
+        const ymStr = y + "-" + ("0"+m).slice(-2);
+        const logs = Array.isArray(appData.menuLogs) ? appData.menuLogs : [];
+
+        const days = optionalDays || logs.filter(dStr=>{
+          return typeof dStr==="string" && dStr.slice(0,7)===ymStr;
+        });
+
+        menuDaysList.innerHTML = "";
+        if(!days.length){
+          const li = document.createElement("li");
+          li.className = "history-item no-data";
+          li.textContent = "まだ記録されていません。";
+          menuDaysList.appendChild(li);
+          return;
+        }
+        // ソートして表示
+        const sorted = days.slice().sort();
+        sorted.forEach(dStr=>{
+          const li = document.createElement("li");
+          li.className = "history-item";
+          const top = document.createElement("div");
+          top.className = "history-topline";
+
+          const dateSpan = document.createElement("span");
+          dateSpan.className = "history-date";
+          dateSpan.textContent = dStr;
+          top.appendChild(dateSpan);
+
+          const tagSpan = document.createElement("span");
+          tagSpan.className = "history-score";
+          tagSpan.textContent = "メニュー実施";
+          top.appendChild(tagSpan);
+
+          li.appendChild(top);
+          menuDaysList.appendChild(li);
+        });
       }
 
       scoreFoot.addEventListener("input", updateScore);
@@ -630,13 +790,15 @@
       scoreOHS.addEventListener("input", updateScore);
 
       btnSave.addEventListener("click", handleSave);
+      btnMenuDone.addEventListener("click", handleMenuDone);
       btnClearForm.addEventListener("click", clearForm);
       btnClearHistory.addEventListener("click", handleClearHistory);
 
-      // 初期表示
       clearForm();
       renderHistory();
+      updateMonthlyStats();
     })();
   </script>
+
 </body>
 </html>
