@@ -120,10 +120,14 @@ button:active{ opacity:0.85; transform:translateY(1px); }
 <section class="card">
   <h2>今日の構造スコア</h2>
   <!-- 足底 -->
-  <div class="slider-block">
-    <div class="slider-label">① 足底（横アーチ支点） <span id="s1v" class="score-value">0</span></div>
-    <input id="s1" type="range" min="0" max="3" value="0">
-    <div class="criteria">
+ <div class="criteria-box">
+   <div class="slider-label">
+  ① 足底（横アーチ支点） <span id="s1v" class="score-value">0</span>
+</div>
+  <label><input type="checkbox" name="s1" value="0">0：つま先 or かかとに逃げる／支点なし</label>
+  <label><input type="checkbox" name="s1" value="1">1：途中だけ支点が出る</label>
+  <label><input type="checkbox" name="s1" value="2">2：しゃがみ〜立ち上がりの大半で支点が成立</label>
+  <label><input type="checkbox" name="s1" value="3">3：荷物を持っても揺るがず、左右差なし</label>
 0：つま先 or かかとに逃げる／支点なし  
 1：途中だけ支点が出る  
 2：しゃがみ〜立ち上がりの大半で支点が成立  
@@ -185,15 +189,10 @@ button:active{ opacity:0.85; transform:translateY(1px); }
 
   let appData = loadData();
 
-  const s1 = document.getElementById("s1");
-  const s2 = document.getElementById("s2");
-  const s3 = document.getElementById("s3");
-
   const s1v = document.getElementById("s1v");
   const s2v = document.getElementById("s2v");
   const s3v = document.getElementById("s3v");
 
-  s1.oninput = ()=> s1v.textContent = s1.value;
   s2.oninput = ()=> s2v.textContent = s2.value;
   s3.oninput = ()=> s3v.textContent = s3.value;
 
@@ -203,9 +202,9 @@ button:active{ opacity:0.85; transform:translateY(1px); }
 
     const entry = {
       date: dStr,
-      s1: Number(s1.value),
-      s2: Number(s2.value),
-      s3: Number(s3.value)
+s1: getMaxScore("s1"),
+s2: Number(document.getElementById("s2").value),
+s3: Number(document.getElementById("s3").value),
     };
 
     appData.checks.push(entry);
@@ -240,6 +239,34 @@ button:active{ opacity:0.85; transform:translateY(1px); }
 
   renderHistory();
 })();
+  function getMaxScore(groupName){
+  const boxes = document.querySelectorAll(`input[name="${groupName}"]:checked`);
+  if(!boxes.length) return 0;
+  let max = 0;
+  boxes.forEach(b=>{
+    const v = Number(b.value);
+    if(v > max) max = v;
+  });
+  return max;
+}
+
+document.querySelectorAll("input[type=checkbox]").forEach(b=>{
+  b.addEventListener("change", updateUI);
+});
+  
+   function updateUI(){
+  // 足底（チェックボックス）
+  const s1 = getMaxScore("s1");
+  document.getElementById("s1v").textContent = s1;
+
+  // 胸郭（スライダー値をそのまま）
+  const s2 = Number(document.getElementById("s2").value);
+  document.getElementById("s2v").textContent = s2;
+
+  // OHS（スライダー値をそのまま）
+  const s3 = Number(document.getElementById("s3").value);
+  document.getElementById("s3v").textContent = s3;
+  }
 </script>
 </body>
 </html>
