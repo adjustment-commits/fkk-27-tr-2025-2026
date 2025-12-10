@@ -4,7 +4,15 @@
   <meta charset="UTF-8">
   <title>FKK27｜構造評価｜by adjustment-field</title>
   <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
-  <meta name="theme-color" content="#f8faf9">
+  <meta name="theme-color" content="#00b386">
+  <link rel="manifest" href="manifest.json">
+  <script>
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("service-worker.js");
+    });
+  }
+  </script>
   <style>
     :root{
       --bg:#f8faf9;
@@ -14,8 +22,9 @@
       --text:#1a1a1a;
       --muted:#666;
       --line:rgba(0,0,0,0.08);
-      --danger:#e45757;
       --ok:#0a8f5a;
+      --warn:#c47f00;
+      --danger:#e45757;
       font-family:"Noto Sans JP",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
     }
     *{box-sizing:border-box;}
@@ -27,12 +36,12 @@
       -webkit-text-size-adjust:100%;
     }
     header{
-      padding:16px 16px 8px;
+      padding:20px 16px 8px;
       text-align:center;
     }
     header h1{
-      margin:0 0 4px;
-      font-size:1.1rem;
+      margin:0 0 6px;
+      font-size:1.2rem;
       font-weight:600;
     }
     header p{
@@ -41,160 +50,44 @@
       color:var(--muted);
     }
     main{
-      max-width:900px;
+      max-width:520px;
       margin:0 auto 32px;
       padding:0 12px 24px;
     }
-    .summary-card{
-      background:var(--card);
-      border-radius:10px;
-      padding:12px 14px;
-      box-shadow:0 2px 4px rgba(0,0,0,0.04);
-      border:1px solid var(--line);
-      margin-bottom:12px;
-    }
-    .summary-top{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:8px;
-      margin-bottom:4px;
-    }
-    .summary-top h2{
-      margin:0;
-      font-size:0.95rem;
-      font-weight:600;
-    }
-    .score-main{
-      display:flex;
-      align-items:baseline;
-      gap:8px;
-    }
-    .score-main .score-total{
-      font-size:1.5rem;
-      font-weight:700;
-    }
-    .score-main .score-max{
-      font-size:0.8rem;
-      color:var(--muted);
-    }
-    .score-percent{
-      font-size:0.85rem;
-      font-weight:600;
-    }
-    .score-percent.ok{color:var(--ok);}
-    .score-percent.mid{color:#c47f00;}
-    .score-percent.low{color:var(--danger);}
-    .summary-note{
-      font-size:0.75rem;
-      color:var(--muted);
-      margin-top:4px;
-    }
-    .section{
-      margin-top:12px;
-    }
-    .section h3{
-      font-size:0.95rem;
-      margin:0 0 4px;
-      font-weight:600;
-    }
-    .section p.lead{
-      margin:0 0 6px;
-      font-size:0.8rem;
-      color:var(--muted);
-    }
     .card{
       background:var(--card);
-      border-radius:10px;
-      padding:10px 12px 12px;
+      border-radius:12px;
+      padding:16px 16px 18px;
       box-shadow:0 2px 4px rgba(0,0,0,0.04);
       border:1px solid var(--line);
-      margin-bottom:10px;
+      margin-bottom:14px;
     }
-    .item-header{
-      display:flex;
-      justify-content:space-between;
-      align-items:flex-end;
-      gap:8px;
-      margin-bottom:4px;
-    }
-    .item-title{
-      font-size:0.9rem;
+    .card h2{
+      margin:0 0 8px;
+      font-size:1rem;
       font-weight:600;
     }
-    .item-tag{
-      font-size:0.7rem;
-      padding:2px 6px;
-      border-radius:999px;
-      background:var(--accent-soft);
-      color:var(--accent);
-      white-space:nowrap;
-    }
-    .item-desc{
-      font-size:0.75rem;
-      color:var(--muted);
-      margin-bottom:6px;
-    }
-    .slider-row{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      margin:4px 0 2px;
-    }
-    .slider-row input[type=range]{
-      flex:1;
-      accent-color:var(--accent);
-    }
-    .slider-row .score-label{
+    .lead{
       font-size:0.8rem;
-      width:42px;
-      text-align:right;
-      font-variant-numeric:tabular-nums;
-    }
-    .slider-scale{
-      display:flex;
-      justify-content:space-between;
-      font-size:0.7rem;
       color:var(--muted);
-      margin-top:-2px;
+      margin:0 0 10px;
     }
-    textarea{
-      width:100%;
-      min-height:50px;
-      resize:vertical;
-      border-radius:6px;
-      border:1px solid var(--line);
-      padding:6px 8px;
-      font-size:0.8rem;
-      font-family:inherit;
-      background:#fafafa;
-    }
-    textarea:focus{
-      outline:none;
-      border-color:var(--accent);
-      background:#ffffff;
-      box-shadow:0 0 0 1px rgba(0,123,158,0.15);
-    }
-    .small-label{
-      font-size:0.7rem;
-      color:var(--muted);
-      margin:4px 0 2px;
-    }
-    .btn-row{
-      margin-top:10px;
+    .btn-column{
       display:flex;
-      gap:8px;
-      flex-wrap:wrap;
+      flex-direction:column;
+      gap:10px;
+      margin-top:4px;
     }
     button{
       border-radius:999px;
       border:none;
-      padding:8px 14px;
-      font-size:0.8rem;
+      padding:12px 16px;
+      font-size:0.95rem;
       font-weight:600;
       cursor:pointer;
-      display:inline-flex;
+      display:flex;
       align-items:center;
+      justify-content:center;
       gap:6px;
       white-space:nowrap;
     }
@@ -202,288 +95,116 @@
       background:var(--accent);
       color:#ffffff;
     }
-    .btn-ghost{
+    .btn-outline{
       background:transparent;
-      color:var(--muted);
-      border:1px solid var(--line);
+      color:var(--accent);
+      border:1px solid var(--accent-soft);
     }
     button:active{
       opacity:0.85;
       transform:translateY(1px);
     }
-    .history{
-      margin-top:10px;
-    }
-    .history-header{
+    .stat-row{
       display:flex;
       justify-content:space-between;
-      align-items:center;
+      align-items:baseline;
       gap:8px;
-      margin-bottom:4px;
+      margin-top:4px;
     }
-    .history-header h3{
-      margin:0;
-      font-size:0.9rem;
-      font-weight:600;
+    .stat-label{
+      font-size:0.8rem;
+      color:var(--muted);
     }
-    .history-list{
+    .stat-value{
+      font-size:1.3rem;
+      font-weight:700;
+    }
+    .stat-value.ok{color:var(--ok);}
+    .stat-value.warn{color:var(--warn);}
+    .stat-value.bad{color:var(--danger);}
+    .stat-detail{
+      font-size:0.75rem;
+      color:var(--muted);
+      margin-top:6px;
+    }
+    .days-list{
       list-style:none;
       padding:0;
-      margin:0;
+      margin:6px 0 0;
       font-size:0.75rem;
-      max-height:260px;
+      color:var(--muted);
+      max-height:120px;
       overflow-y:auto;
     }
-    .history-item{
-      padding:4px 0;
+    .days-list li{
+      padding:2px 0;
       border-bottom:1px dashed var(--line);
-      display:flex;
-      flex-direction:column;
-      gap:1px;
     }
-    .history-topline{
-      display:flex;
-      justify-content:space-between;
-      gap:6px;
-    }
-    .history-date{
-      color:var(--muted);
-    }
-    .history-score{
-      font-variant-numeric:tabular-nums;
-    }
-    .history-tags{
-      display:flex;
-      flex-wrap:wrap;
-      gap:4px;
-      margin-top:1px;
-    }
-    .history-tag{
-      font-size:0.65rem;
-      padding:1px 4px;
-      border-radius:999px;
-      background:#eef3f6;
-      color:#556;
-    }
-    .no-data{
-      font-size:0.75rem;
-      color:var(--muted);
+    .days-list li:last-child{
+      border-bottom:none;
     }
     footer{
       text-align:center;
       font-size:0.68rem;
       color:var(--muted);
-      padding:8px 0 16px;
+      padding:4px 0 14px;
     }
     @media (min-width:720px){
-      header h1{font-size:1.2rem;}
-      .layout{
-        display:grid;
-        grid-template-columns:2.1fr 1.4fr;
-        gap:12px;
-        align-items:flex-start;
-      }
-      .history-card{
-        margin-top:4px;
-      }
+      header h1{font-size:1.3rem;}
     }
   </style>
 </head>
 <body>
   <header>
     <h1>FKK27｜構造評価｜by adjustment-field</h1>
-    <p>捕手×中軸のための「構造チェック0）」と、月10回メニュー実施の達成率を管理するスマホ用WEBアプリ。</p>
+    <p>捕手×中軸のための「0）構造チェック」と月10回メニュー達成をサポートするホーム画面。</p>
   </header>
-
   <main>
-    <section class="summary-card">
-      <div class="summary-top">
-        <h2>今日の構造スコア</h2>
-        <div class="score-main">
-          <span id="scoreTotal" class="score-total">0</span>
-          <span class="score-max">/ 30 点</span>
-        </div>
-      </div>
-      <div class="summary-top" style="margin-top:2px;">
-        <span style="font-size:0.8rem;color:var(--muted);">構造達成率</span>
-        <span id="scorePercent" class="score-percent low">0 %</span>
-      </div>
-      <p class="summary-note" id="scoreComment">
-        スライダーを動かして、3項目（足底・胸郭・オーバーヘッドスクワット）を自己評価してください。
-      </p>
-    </section>
-
-  <div class="layout">
-  <section>
-    <div class="section">
-      <h3>0）3つの構造チェック</h3>
-      <p class="lead">ウォームアップ前に、「構造が整っているか」を3つの視点だけで確認します。合計30点でその日のコンディションを管理します。</p>
-    </div>
-
-    <div class="card">
-      <div class="item-header">
-        <div class="item-title">① 足底3点荷重（母指球7：小指球3：踵）</div>
-        <div class="item-tag">足底・軸</div>
-      </div>
-      <p class="item-desc">
-        立位で、足裏が床に“吸い付いている”感覚があるか。母指球・小指球・踵の3点にバランスよく乗れているかを10点満点で自己評価。
-      </p>
-      <div class="slider-row">
-        <input id="scoreFoot" type="range" min="0" max="10" step="1">
-        <span class="score-label"><span id="scoreFootVal">0</span> 点</span>
-      </div>
-      <div class="slider-scale">
-        <span>0：バラバラ</span><span>10：吸い付くように安定</span>
-      </div>
-      <div class="small-label">メモ（どんな感覚だったか一言）</div>
-      <textarea id="noteFoot" placeholder="例）右足母指球が抜けやすい／左踵に乗りやすいなど"></textarea>
-    </div>
-
-    <div class="card">
-      <div class="item-header">
-        <div class="item-title">② 胸郭回旋（腰を反らずに胸だけ動くか）</div>
-        <div class="item-tag">胸郭分離</div>
-      </div>
-      <p class="item-desc">
-        腰を反らず、骨盤は正面のまま、胸郭だけ左右に回旋できるか。昨日体感した「胸だけが回る」感覚にどれくらい近いかを10点満点で評価。
-      </p>
-      <div class="slider-row">
-        <input id="scoreThorax" type="range" min="0" max="10" step="1">
-        <span class="score-label"><span id="scoreThoraxVal">0</span> 点</span>
-      </div>
-      <div class="slider-scale">
-        <span>0：腰で捻ってしまう</span><span>10：胸だけスムーズに回る</span>
-      </div>
-      <div class="small-label">メモ（痛み・引っかかり・左右差など）</div>
-      <textarea id="noteThorax" placeholder="例）左回旋で胸が硬い／右肩甲骨まわりが張るなど"></textarea>
-    </div>
-
-    <div class="card">
-      <div class="item-header">
-        <div class="item-title">③ オーバーヘッドスクワット（OHS）</div>
-        <div class="item-tag">全身統合</div>
-      </div>
-      <p class="item-desc">
-        頭上で棒（または腕）を保持したままスクワット。腰椎の反り上げ、バーが前に倒れる、膝が内側に入る、足裏がつぶれるなどの代償がどれくらい少ないかを評価。
-      </p>
-      <div class="slider-row">
-        <input id="scoreOHS" type="range" min="0" max="10" step="1">
-        <span class="score-label"><span id="scoreOHSVal">0</span> 点</span>
-      </div>
-      <div class="slider-scale">
-        <span>0：代償だらけ</span><span>10：代償なくスムーズ</span>
-      </div>
-      <div class="small-label">メモ（どこが一番きつい／崩れやすいか）</div>
-      <textarea id="noteOHS" placeholder="例）しゃがむと腰が反る／右肩が硬くてバーが前に出るなど"></textarea>
-    </div>
-
-    <div class="card">
-      <div class="item-header">
-        <div class="item-title">今日の一言メモ</div>
-        <div class="item-tag">感覚ログ</div>
-      </div>
-      <p class="item-desc">
-        「今日はここが良かった」「ここが重い」「ここを優先してほぐしたい」など、次回につなげたい一言を残す欄。
-      </p>
-      <textarea id="noteFree" placeholder="例）右肩甲骨の詰まり少なめ。胸郭の回旋は昨日よりスムーズ。"></textarea>
-
-      <div class="btn-row">
-        <button id="btnSave" class="btn-primary" type="button">
-          <span>構造スコアを保存</span>
-        </button>
-        <button id="btnMenuDone" class="btn-primary" type="button" style="background:#0a8f5a;">
-          <span>今日のメニュー実施を記録</span>
-        </button>
-        <button id="btnClearForm" class="btn-ghost" type="button">
-          <span>入力だけリセット</span>
-        </button>
-      </div>
-    </div>
-  </section>
-
-  <aside>
-    <section class="card history-card">
-      <div class="history-header">
-        <h3>構造スコアの履歴</h3>
-        <button id="btnClearHistory" class="btn-ghost" type="button" style="padding:4px 10px;font-size:0.7rem;">
-          履歴を全削除
-        </button>
-      </div>
-      <p class="small-label" style="margin-top:0;">
-        最新10件まで表示。スコアは「その日の構造の整い具合」を示します。
-      </p>
-      <ul id="historyList" class="history-list">
-        <li class="history-item no-data">まだ保存されたデータはありません。</li>
-      </ul>
-    </section>
-
     <section class="card">
-      <h3 style="font-size:0.9rem;margin:0 0 4px;">メニュー達成率（暦月）</h3>
-      <p class="small-label" style="margin:0 0 4px;">
-        1ヶ月につき、同じメニューを10回実施できれば達成率100％。それ以上は「やり切った状態」として扱います。
+      <h2>今日やること</h2>
+      <p class="lead">
+        まずは 0）構造評価で「体の土台」をチェック。<br>
+        そのうえで、いつものトレーニングメニューに進みます。
       </p>
-
-      <div class="summary-top" style="margin-top:4px;">
-        <span style="font-size:0.8rem;color:var(--muted);" id="monthLabel">今月の達成率</span>
-        <span id="monthPercent" class="score-percent low">0 %</span>
+      <div class="btn-column">
+        <button type="button" class="btn-primary" onclick="goStructure()">
+          0）構造評価をする（足底・胸郭・OHS）
+        </button>
+        <button type="button" class="btn-outline" onclick="goMenu()">
+          今日のメニュー画面へ進む
+        </button>
       </div>
-      <p class="summary-note" id="monthDetail">
-        今月はまだメニュー実施が記録されていません。
-      </p>
-
-      <p class="small-label" style="margin-top:6px;">達成率の目安</p>
-      <ul style="margin:0;padding-left:1.1em;font-size:0.75rem;color:var(--muted);">
-        <li>100％（10回以上）：構造づくりは今月やり切り。翌月は質を高める月に。</li>
-        <li>80〜99％（8〜9回）：ほぼ理想。あと1〜2回をどこでねじ込むか相談。</li>
-        <li>50〜79％（5〜7回）：悪くないが、構造の定着には少し物足りないゾーン。</li>
-        <li>〜49％（0〜4回）：今月はまず「メニューに触れる回数」を優先する月。</li>
-      </ul>
-
-      <div class="small-label" style="margin-top:6px;">今月の実施日</div>
-      <ul id="menuDaysList" class="history-list" style="max-height:140px;">
-        <li class="history-item no-data">まだ記録されていません。</li>
-      </ul>
     </section>
-  </aside>
-</div>
-</main>
+<section class="card">
+  <h2>今月のメニュー達成状況</h2>
+  <p class="lead">
+    同じメニューを「月10回」実施できれば、その月は構造づくりの量として100％達成とみなします。
+  </p>
 
+  <div class="stat-row">
+    <div class="stat-label" id="monthLabel">今月の達成率</div>
+    <div id="monthPercent" class="stat-value bad">0%</div>
+  </div>
+  <p id="monthDetail" class="stat-detail">
+    今月はまだメニュー実施が記録されていません。
+  </p>
+
+  <p class="stat-label" style="margin-top:10px;">今月の実施日</p>
+  <ul id="menuDaysList" class="days-list">
+    <li>まだ記録されていません。</li>
+  </ul>
+</section>  </main>
   <footer>
-    FKK27 捕手のための構造評価アプリ。ブラウザのローカル保存のみを使用し、個人端末内で完結します。
+    FKK27捕手のための構造評価＆メニュー管理アプリ。ブラウザのローカル保存のみを使用し、個人端末内で完結します。
   </footer>
-
   <script>
     (function(){
-      const scoreFoot = document.getElementById("scoreFoot");
-      const scoreThorax = document.getElementById("scoreThorax");
-      const scoreOHS = document.getElementById("scoreOHS");
-
-      const scoreFootVal = document.getElementById("scoreFootVal");
-      const scoreThoraxVal = document.getElementById("scoreThoraxVal");
-      const scoreOHSVal = document.getElementById("scoreOHSVal");
-
-      const scoreTotal = document.getElementById("scoreTotal");
-      const scorePercent = document.getElementById("scorePercent");
-      const scoreComment = document.getElementById("scoreComment");
-
-      const noteFoot = document.getElementById("noteFoot");
-      const noteThorax = document.getElementById("noteThorax");
-      const noteOHS = document.getElementById("noteOHS");
-      const noteFree = document.getElementById("noteFree");
-
-      const btnSave = document.getElementById("btnSave");
-      const btnMenuDone = document.getElementById("btnMenuDone");
-      const btnClearForm = document.getElementById("btnClearForm");
-      const btnClearHistory = document.getElementById("btnClearHistory");
-
-      const historyList = document.getElementById("historyList");
       const monthLabel = document.getElementById("monthLabel");
       const monthPercent = document.getElementById("monthPercent");
       const monthDetail = document.getElementById("monthDetail");
       const menuDaysList = document.getElementById("menuDaysList");
 
       const STORAGE_KEY = "fkk27_structural_and_menu_v1";
-
       let appData = loadData();
 
       function loadData(){
@@ -493,209 +214,17 @@
             return { checks: [], menuLogs: [] };
           }
           const parsed = JSON.parse(raw);
-          // 旧バージョン（配列のみ）からの移行も許容
           if(Array.isArray(parsed)){
             return { checks: parsed, menuLogs: [] };
           }
-          const data = {
+          return {
             checks: Array.isArray(parsed.checks) ? parsed.checks : [],
             menuLogs: Array.isArray(parsed.menuLogs) ? parsed.menuLogs : []
           };
-          return data;
         }catch(e){
           console.error("loadData error", e);
           return { checks: [], menuLogs: [] };
         }
-      }
-
-      function saveData(){
-        try{
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
-        }catch(e){
-          console.error("saveData error", e);
-        }
-      }
-
-      function updateScore(){
-        const f = Number(scoreFoot.value)||0;
-        const t = Number(scoreThorax.value)||0;
-        const o = Number(scoreOHS.value)||0;
-        scoreFootVal.textContent = f;
-        scoreThoraxVal.textContent = t;
-        scoreOHSVal.textContent = o;
-        const total = f + t + o;
-        scoreTotal.textContent = total.toString();
-        const percent = Math.round((total/30)*100);
-        scorePercent.textContent = percent + " %";
-        scorePercent.classList.remove("ok","mid","low");
-        if(percent >= 87){
-          scorePercent.classList.add("ok");
-          scoreComment.textContent = "構造コンディションは「◎」。ウエイトも動作も、その日のテーマに沿って攻めてOK。";
-        }else if(percent >= 70){
-          scorePercent.classList.add("mid");
-          scoreComment.textContent = "構造コンディションは「○」。基本メニューをこなしつつ、気になる部位の修正を少し多めに。";
-        }else if(percent >= 53){
-          scorePercent.classList.add("mid");
-          scoreComment.textContent = "構造コンディションは「△」。高強度は控えめにして、リセット・モビリティ中心に組み立てる日。";
-        }else{
-          scorePercent.classList.add("low");
-          scoreComment.textContent = "構造コンディションは「×」寄り。今日は無理に出力を求めず、足底・胸郭・OHSの質を整えることを最優先に。";
-        }
-      }
-
-      function formatDateTime(d){
-        const y = d.getFullYear();
-        const m = ("0"+(d.getMonth()+1)).slice(-2);
-        const day = ("0"+d.getDate()).slice(-2);
-        const h = ("0"+d.getHours()).slice(-2);
-        const min = ("0"+d.getMinutes()).slice(-2);
-        return y + "-" + m + "-" + day + " " + h + ":" + min;
-      }
-
-      function formatYMD(d){
-        const y = d.getFullYear();
-        const m = ("0"+(d.getMonth()+1)).slice(-2);
-        const day = ("0"+d.getDate()).slice(-2);
-        return y + "-" + m + "-" + day;
-      }
-
-      function renderHistory(){
-        const list = appData.checks || [];
-        historyList.innerHTML = "";
-        if(!list.length){
-          const li = document.createElement("li");
-          li.className = "history-item no-data";
-          li.textContent = "まだ保存されたデータはありません。";
-          historyList.appendChild(li);
-          return;
-        }
-        const latest = list.slice(-10).reverse();
-        latest.forEach(item=>{
-          const li = document.createElement("li");
-          li.className = "history-item";
-
-          const top = document.createElement("div");
-          top.className = "history-topline";
-
-          const d = document.createElement("span");
-          d.className = "history-date";
-          d.textContent = item.date || "";
-          top.appendChild(d);
-
-          const s = document.createElement("span");
-          s.className = "history-score";
-          const total = item.total || 0;
-          const percent = item.percent || 0;
-          s.textContent = total + " / 30点 (" + percent + "%)";
-          top.appendChild(s);
-
-          li.appendChild(top);
-
-          const tags = document.createElement("div");
-          tags.className = "history-tags";
-
-          const parts = [
-            { key:"foot", label:"足底"},
-            { key:"thorax", label:"胸郭"},
-            { key:"ohs", label:"OHS"}
-          ];
-          const scores = item.scores || {};
-          parts.forEach(p=>{
-            const val = typeof scores[p.key]==="number" ? scores[p.key] : null;
-            if(val===null){ return; }
-            const span = document.createElement("span");
-            span.className = "history-tag";
-            span.textContent = p.label + ":" + val;
-            tags.appendChild(span);
-          });
-
-          if(item.note && item.note.trim()){
-            const span = document.createElement("span");
-            span.className = "history-tag";
-            span.textContent = "メモあり";
-            tags.appendChild(span);
-          }
-
-          li.appendChild(tags);
-          historyList.appendChild(li);
-        });
-      }
-
-      function clearForm(){
-        scoreFoot.value = 0;
-        scoreThorax.value = 0;
-        scoreOHS.value = 0;
-        noteFoot.value = "";
-        noteThorax.value = "";
-        noteOHS.value = "";
-        noteFree.value = "";
-        updateScore();
-      }
-
-      function handleSave(){
-        const f = Number(scoreFoot.value)||0;
-        const t = Number(scoreThorax.value)||0;
-        const o = Number(scoreOHS.value)||0;
-        const total = f + t + o;
-        const percent = Math.round((total/30)*100);
-
-        const now = new Date();
-        const entry = {
-          date: formatDateTime(now),
-          total: total,
-          percent: percent,
-          scores: {
-            foot: f,
-            thorax: t,
-            ohs: o
-          },
-          notes: {
-            foot: noteFoot.value.trim(),
-            thorax: noteThorax.value.trim(),
-            ohs: noteOHS.value.trim(),
-            free: noteFree.value.trim()
-          },
-          note: noteFree.value.trim()
-        };
-
-        if(!Array.isArray(appData.checks)){
-          appData.checks = [];
-        }
-        appData.checks.push(entry);
-        saveData();
-        renderHistory();
-        scoreComment.textContent = "今日の構造スコアを保存しました。履歴から過去との違いを確認できます。";
-      }
-
-      function handleClearHistory(){
-        if(!confirm("保存されている全ての構造スコア履歴を削除しますか？この操作は元に戻せません。")){
-          return;
-        }
-        appData.checks = [];
-        saveData();
-        renderHistory();
-      }
-
-      function handleMenuDone(){
-        const today = formatYMD(new Date());
-        if(!Array.isArray(appData.menuLogs)){
-          appData.menuLogs = [];
-        }
-        const idx = appData.menuLogs.indexOf(today);
-        if(idx === -1){
-          appData.menuLogs.push(today);
-          saveData();
-          updateMonthlyStats();
-          monthDetail.textContent = "今日のメニュー実施を記録しました。今月は " + appData.menuLogs.length + " 回目です。";
-        }else{
-          if(confirm("すでに「本日のメニュー実施」が記録されています。今日の記録を取り消しますか？")){
-            appData.menuLogs.splice(idx,1);
-            saveData();
-            updateMonthlyStats();
-            monthDetail.textContent = "今日のメニュー実施の記録を取り消しました。";
-          }
-        }
-        renderMenuDays();
       }
 
       function updateMonthlyStats(){
@@ -705,100 +234,70 @@
         const ymStr = y + "-" + ("0"+m).slice(-2);
 
         const logs = Array.isArray(appData.menuLogs) ? appData.menuLogs : [];
-        let countThisMonth = 0;
         const daysThisMonth = [];
+        let count = 0;
 
         logs.forEach(dStr=>{
           if(typeof dStr !== "string"){ return; }
           if(dStr.slice(0,7) === ymStr){
-            countThisMonth++;
+            count++;
             daysThisMonth.push(dStr);
           }
         });
 
-        const rawPercent = (countThisMonth/10)*100;
+        const rawPercent = (count/10)*100;
         const percent = rawPercent >= 100 ? 100 : Math.round(rawPercent);
 
         monthLabel.textContent = ymStr + " の達成率";
-        monthPercent.textContent = percent + " %";
-        monthPercent.classList.remove("ok","mid","low");
+        monthPercent.textContent = percent + "%";
+        monthPercent.classList.remove("ok","warn","bad");
 
         if(percent >= 100){
           monthPercent.classList.add("ok");
-          monthDetail.textContent = "今月は目標の10回をクリア（" + countThisMonth + "回）。構造づくりの量は十分です。質の調整に集中できます。";
+          monthDetail.textContent = "今月は目標の10回をクリア（" + count + "回）。構造づくりの量は十分です。質の調整に集中できます。";
         }else if(percent >= 80){
           monthPercent.classList.add("ok");
-          monthDetail.textContent = "今月は " + countThisMonth + " / 10回。かなり良いペースです。あと少しで100％達成。";
+          monthDetail.textContent = "今月は " + count + " / 10回。かなり良いペースです。あと少しで100％達成。";
         }else if(percent >= 50){
-          monthPercent.classList.add("mid");
-          monthDetail.textContent = "今月は " + countThisMonth + " / 10回。悪くないですが、構造定着にはもう数回積み重ねたいゾーンです。";
-        }else if(countThisMonth > 0){
-          monthPercent.classList.add("low");
-          monthDetail.textContent = "今月は " + countThisMonth + " / 10回。まずはメニューに触れる回数を増やすことを優先しましょう。";
+          monthPercent.classList.add("warn");
+          monthDetail.textContent = "今月は " + count + " / 10回。悪くないですが、構造定着にはもう数回積み重ねたいゾーンです。";
+        }else if(count > 0){
+          monthPercent.classList.add("bad");
+          monthDetail.textContent = "今月は " + count + " / 10回。まずはメニューに触れる回数を増やすことを優先しましょう。";
         }else{
-          monthPercent.classList.add("low");
+          monthPercent.classList.add("bad");
           monthDetail.textContent = "今月はまだメニュー実施が記録されていません。まずは1回目をクリアするところから。";
         }
 
         renderMenuDays(daysThisMonth);
       }
 
-      function renderMenuDays(optionalDays){
-        const now = new Date();
-        const y = now.getFullYear();
-        const m = now.getMonth() + 1;
-        const ymStr = y + "-" + ("0"+m).slice(-2);
-        const logs = Array.isArray(appData.menuLogs) ? appData.menuLogs : [];
-
-        const days = optionalDays || logs.filter(dStr=>{
-          return typeof dStr==="string" && dStr.slice(0,7)===ymStr;
-        });
-
+      function renderMenuDays(days){
         menuDaysList.innerHTML = "";
         if(!days.length){
           const li = document.createElement("li");
-          li.className = "history-item no-data";
           li.textContent = "まだ記録されていません。";
           menuDaysList.appendChild(li);
           return;
         }
-        // ソートして表示
         const sorted = days.slice().sort();
         sorted.forEach(dStr=>{
           const li = document.createElement("li");
-          li.className = "history-item";
-          const top = document.createElement("div");
-          top.className = "history-topline";
-
-          const dateSpan = document.createElement("span");
-          dateSpan.className = "history-date";
-          dateSpan.textContent = dStr;
-          top.appendChild(dateSpan);
-
-          const tagSpan = document.createElement("span");
-          tagSpan.className = "history-score";
-          tagSpan.textContent = "メニュー実施";
-          top.appendChild(tagSpan);
-
-          li.appendChild(top);
+          li.textContent = dStr + "：メニュー実施";
           menuDaysList.appendChild(li);
         });
       }
 
-      scoreFoot.addEventListener("input", updateScore);
-      scoreThorax.addEventListener("input", updateScore);
-      scoreOHS.addEventListener("input", updateScore);
+      window.goStructure = function(){
+        window.location.href = "structure.html";
+      };
 
-      btnSave.addEventListener("click", handleSave);
-      btnMenuDone.addEventListener("click", handleMenuDone);
-      btnClearForm.addEventListener("click", clearForm);
-      btnClearHistory.addEventListener("click", handleClearHistory);
+      window.goMenu = function(){
+        window.location.href = "menu.html";
+      };
 
-      clearForm();
-      renderHistory();
       updateMonthlyStats();
     })();
   </script>
-
 </body>
 </html>
