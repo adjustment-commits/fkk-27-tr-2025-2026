@@ -1,1 +1,245 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>0）構造評価｜FKK27</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<meta name="theme-color" content="#007b9e">
+<link rel="manifest" href="manifest.json">
+<style>
+:root{
+  --bg:#f8faf9;
+  --card:#ffffff;
+  --accent:#007b9e;
+  --accent-soft:#d6ecf5;
+  --text:#1a1a1a;
+  --muted:#666;
+  --line:rgba(0,0,0,0.08);
+  font-family:"Noto Sans JP", system-ui, sans-serif;
+}
+*{box-sizing:border-box;}
+body{ margin:0; background:var(--bg); color:var(--text); line-height:1.7; }
 
+header{
+  padding:20px 16px 8px; text-align:center;
+}
+header h1{
+  margin:0 0 6px; font-size:1.1rem; font-weight:600;
+}
+header p{
+  margin:0; font-size:0.8rem; color:var(--muted);
+}
+
+main{
+  max-width:520px; margin:0 auto 24px; padding:0 12px 24px;
+}
+
+.card{
+  background:var(--card);
+  border-radius:12px;
+  padding:16px 16px 18px;
+  border:1px solid var(--line);
+  margin-bottom:14px;
+}
+
+.card h2{
+  margin:0 0 12px;
+  font-size:1rem;
+  font-weight:600;
+}
+
+.slider-block{ margin-bottom:22px; }
+.slider-label{ font-size:0.9rem; font-weight:600; margin-bottom:4px; }
+
+.score-value{
+  font-size:0.95rem;
+  font-weight:700;
+  color:var(--accent);
+  margin-left:6px;
+}
+
+input[type=range]{ width:100%; margin:10px 0 6px; }
+
+/* 基準説明 */
+.criteria{
+  font-size:0.75rem;
+  color:var(--muted);
+  background:#f0f7fa;
+  padding:8px 10px;
+  border-radius:8px;
+  border-left:3px solid var(--accent);
+  white-space:pre-line;
+  line-height:1.4;
+}
+
+/* ボタン */
+button{
+  width:100%;
+  padding:12px 16px;
+  border:none;
+  border-radius:999px;
+  font-size:1rem;
+  font-weight:600;
+  background:var(--accent);
+  color:#fff;
+  cursor:pointer;
+  margin-top:10px;
+}
+button:active{ opacity:0.85; transform:translateY(1px); }
+
+.history-title{ font-size:0.85rem; margin:6px 0 4px; color:var(--muted); }
+.history-list{
+  list-style:none; padding:0; margin:0;
+  max-height:160px; overflow-y:auto; font-size:0.75rem;
+}
+.history-list li{
+  border-bottom:1px dashed var(--line);
+  padding:4px 0;
+}
+
+.back-btn{
+  display:block;
+  margin-top:16px;
+  padding:10px 14px;
+  text-align:center;
+  border-radius:999px;
+  border:1px solid var(--accent-soft);
+  color:var(--accent);
+  background:#fff;
+  font-size:0.9rem;
+  font-weight:600;
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>0）構造評価｜FKK27</h1>
+  <p>選手自身がセルフチェックできるよう明確な評価基準を設定しています。</p>
+</header>
+<main>
+<section class="card">
+  <h2>今日の構造スコア</h2>
+  <!-- 足底 -->
+  <div class="slider-block">
+    <div class="slider-label">① 足底（横アーチ支点） <span id="s1v" class="score-value">0</span></div>
+    <input id="s1" type="range" min="0" max="3" value="0">
+    <div class="criteria">
+0：つま先 or かかとに逃げる／支点なし  
+1：途中だけ支点が出る  
+2：しゃがみ〜立ち上がりの大半で支点が成立  
+3：荷物を持っても揺るがず、左右差なし
+    </div>
+  </div>
+  <!-- 胸郭 -->
+  <div class="slider-block">
+    <div class="slider-label">② 胸郭（肋骨と肩甲帯の分離） <span id="s2v" class="score-value">0</span></div>
+    <input id="s2" type="range" min="0" max="3" value="0">
+    <div class="criteria">
+0：反りで誤魔化して肩甲骨がついてくる  
+1：少しだけ分離する（反り依存）  
+2：自然な可動で分離が成立  
+3：肋骨→肩甲帯の入れ替えが自在で加速につながる
+    </div>
+  </div>
+  <!-- OHS -->
+  <div class="slider-block">
+    <div class="slider-label">③ OHS（オーバーヘッドスクワット） <span id="s3v" class="score-value">0</span></div>
+    <input id="s3" type="range" min="0" max="3" value="0">
+    <div class="criteria">
+0：バーが前に倒れる／重心が逃げる  
+1：ギリ成立（前傾強め）  
+2：バーが耳ライン・重心安定  
+3：滑らか・左右差なし・深さと安定性が高い
+    </div>
+  </div>
+<button onclick="saveScore()">今日の構造スコアを保存</button>
+  </section>
+<section class="card">
+  <h2>構造チェック履歴</h2>
+  <p class="history-title">直近の記録</p>
+  <ul id="historyList" class="history-list">
+    <li>まだ記録がありません。</li>
+  </ul>
+</section>
+<a class="back-btn" href="index.html">← ホームに戻る</a>
+</main>
+<script>
+(function(){
+  const STORAGE_KEY = "fkk27_structural_and_menu_v1";
+
+  function loadData(){
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw) return { checks:[], menuLogs:[] };
+
+      const parsed = JSON.parse(raw);
+      return {
+        checks: Array.isArray(parsed.checks)? parsed.checks : [],
+        menuLogs: Array.isArray(parsed.menuLogs)? parsed.menuLogs : []
+      };
+    }catch(e){
+      console.error(e);
+      return { checks:[], menuLogs:[] };
+    }
+  }
+
+  let appData = loadData();
+
+  const s1 = document.getElementById("s1");
+  const s2 = document.getElementById("s2");
+  const s3 = document.getElementById("s3");
+
+  const s1v = document.getElementById("s1v");
+  const s2v = document.getElementById("s2v");
+  const s3v = document.getElementById("s3v");
+
+  s1.oninput = ()=> s1v.textContent = s1.value;
+  s2.oninput = ()=> s2v.textContent = s2.value;
+  s3.oninput = ()=> s3v.textContent = s3.value;
+
+  window.saveScore = function(){
+    const now = new Date();
+    const dStr = now.getFullYear()+"-"+("0"+(now.getMonth()+1)).slice(-2)+"-"+("0"+now.getDate()).slice(-2);
+
+    const entry = {
+      date: dStr,
+      s1: Number(s1.value),
+      s2: Number(s2.value),
+      s3: Number(s3.value)
+    };
+
+    appData.checks.push(entry);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
+    renderHistory();
+
+    alert("今日の構造スコアを保存しました。");
+  };
+
+  function renderHistory(){
+    const box = document.getElementById("historyList");
+    box.innerHTML = "";
+
+    if(!appData.checks.length){
+      const li = document.createElement("li");
+      li.textContent = "まだ記録がありません。";
+      box.appendChild(li);
+      return;
+    }
+
+    const list = appData.checks.slice().reverse().slice(0,30);
+    list.forEach(rec=>{
+      const li = document.createElement("li");
+      li.textContent =
+        rec.date +
+        " ｜ 足底:" + rec.s1 +
+        " / 胸郭:" + rec.s2 +
+        " / OHS:" + rec.s3;
+      box.appendChild(li);
+    });
+  }
+
+  renderHistory();
+})();
+</script>
+</body>
+</html>
