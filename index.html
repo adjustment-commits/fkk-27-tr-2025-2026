@@ -193,7 +193,14 @@
   <ul id="menuDaysList" class="days-list">
     <li>まだ記録されていません。</li>
   </ul>
+
+  <!-- ★★★ 追加：記録リセットボタン ★★★ -->
+ <div class="btn-column" style="margin-top:16px;"> 
+<button type="button" class="btn-outline" onclick="resetRecords()">記録をリセットする</button>
+  </div>
+
 </section>  </main>
+   
   <footer>
     FKK27捕手のための構造評価＆メニュー管理アプリ。ブラウザのローカル保存のみを使用し、個人端末内で完結します。
   </footer>
@@ -287,6 +294,13 @@
           menuDaysList.appendChild(li);
         });
       }
+ /* ★★★ 追加：リセット機能 ★★★ */
+ window.resetRecords = function(){ 
+if(confirm("記録をすべてリセットしますか？\n（今月の達成率・実施日も消えます）")){
+     localStorage.removeItem(STORAGE_KEY);
+     location.reload();
+   }
+ };
 
       window.goStructure = function(){
         window.location.href = "structure.html";
